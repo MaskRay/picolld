@@ -1,19 +1,24 @@
-LLVM Linker (lld)
-=================
+picolld (stripped-down lld)
+===========================
 
-This directory and its subdirectories contain source code for the LLVM Linker, a
-modular cross platform linker which is built as part of the LLVM compiler
-infrastructure project.
+With `llvm-config` in PATH,
 
-lld is open source software. You may freely distribute it under the terms of
-the license agreement found in LICENSE.txt.
+```sh
+mkdir out
+cd out
+cmake /path/to/picolld -G Ninja
+ninja lld
+```
 
-Benchmarking
-============
+Based on llvm-project/lld on 2020-04-10. Deleted
 
-In order to make sure various developers can evaluate patches over the
-same tests, we create a collection of self contained programs.
+* MIPS: ~3000 lines
+* LTO: ~800 lines
+* basic block sections: ~400 lines
 
-It is hosted at https://s3-us-west-2.amazonaws.com/linker-tests/lld-speed-test.tar.xz
+Removing the dependency on LLVM is possible, but it would require lots of efforts:
 
-The current sha256 is 10eec685463d5a8bbf08d77f4ca96282161d396c65bd97dc99dbde644a31610f.
+* `llvm/DebugInfo/DWARF/`: .eh_frame support
+* `llvm/Object/`: ELF parsing
+* `llvm/Option/Option.h`: command line parsing
+* `llvm/ADT/`: STL extensions
